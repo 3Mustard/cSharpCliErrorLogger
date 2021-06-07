@@ -3,19 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-//// EXAMPLE OF USE
-// string filePath = System.IO.Path.GetFullPath(@"..\logs.txt");
-// ErrorLogger eLogger = new ErrorLogger(filePath);
-
-// string errorMsg = "new error";
-// DateTime date = DateTime.UtcNow;
-
-// eLogger.LogNewError(errorMsg, date);
-// eLogger.DisplayErrorsToConsole();
-
 // HOW TO ADD/REMOVE PARAMS:
 // 1. UPDATE ERROR CLASS
-// 2. ADD NEW PARAMS TO THESE METHODS `LOGNEWERRORS, CREATEERROROBJECTS, DISPLAYERRORS TO CONSOLE`
+// 2. ADD NEW PARAMS TO THESE METHODS `LOGNEWERROR, LOGALLNEWERRORS, CREATEERROROBJECTS, DISPLAYERRORSTOCONSOLE`
 namespace ErrorLoggerApp
 {
     class ErrorLogger
@@ -30,7 +20,7 @@ namespace ErrorLoggerApp
         public void DisplayErrorsToConsole()
         {
             List<Error> errors = CreateErrorObjects();
-            int i = 0;
+            int i = 1;
 
             foreach (Error error in errors)
             {
@@ -40,19 +30,38 @@ namespace ErrorLoggerApp
             }
         }
 
-        public void LogNewError(string error, DateTime date)
+        public void LogNewError(Error error)
         {
             List<string> lines = ReadFile();
-            string fDate = date.ToString();
 
             // ADD NEW PARAMETERS HERE
             // PUT " ~ " BETWEEN EACH NEW PARAM 
             // EX $"{x} ~ {y} ~ {z}";
-            string err = $"{fDate} ~ {error}";
+            string newLine = $"{error.Date} ~ {error.Message}";
 
-            lines.Add(err);
+            lines.Add(newLine);
             File.WriteAllLines(FilePath, lines);
-            Console.WriteLine($"{fDate}: ERROR LOGGED");
+            Console.WriteLine($"ERROR LOGGED");
+        }
+
+        public void LogAllNewErrors(List<Error> errors)
+        {
+            List<string> lines = ReadFile();
+            int counter = 0;
+
+            foreach (Error error in errors)
+            {
+                // ADD NEW PARAMETERS HERE
+                // PUT " ~ " BETWEEN EACH NEW PARAM 
+                // EX $"{x} ~ {y} ~ {z}";
+                string newLine = $"{error.Date} ~ {error.Message}";
+
+                lines.Add(newLine);
+                counter += 1;
+            }
+
+            File.WriteAllLines(FilePath, lines);
+            Console.WriteLine($"{counter} ERRORS LOGGED");
         }
 
         private List<Error> CreateErrorObjects()
@@ -67,8 +76,8 @@ namespace ErrorLoggerApp
                 Error newError = new Error();
 
                 // ADD NEW PARAMETERS HERE WITH INDEX err[i]
-                newError.Date = err[0];
-                newError.Message = err[1];
+                newError.Date = err[0].Trim();
+                newError.Message = err[1].Trim();
                 errors.Add(newError);
             }
 
