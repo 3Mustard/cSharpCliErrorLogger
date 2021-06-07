@@ -1,2 +1,2 @@
-# cSharpCliErrorLogger
-easy way to log errors and display logged errors to console
+# CSharp Error logger 
+Write errors to desired filepath and read filepath to display errors in the console
