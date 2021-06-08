@@ -5,8 +5,6 @@ Write errors to desired filepath and read filepath to display errors in the cons
             string filePath = System.IO.Path.GetFullPath(@"..\logs.txt");
             ErrorLogger eLogger = new ErrorLogger(filePath);
 
-            DateTime date = DateTime.UtcNow;
-
             Error err = new Error();
             Error err2 = new Error();
             Error err3 = new Error();
